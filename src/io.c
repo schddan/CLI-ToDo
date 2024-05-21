@@ -33,12 +33,12 @@ void readToFile(char *fileName){
 
 void printFile(char *fileName){
     FILE *file = fopen(fileName, "r");
-    char c[1024];
+    char line[1024];
     int count = 1;
     if (file != NULL){
-        while (fgets(c, CHAR_LIMIT, file)){
+        while (fgets(line, CHAR_LIMIT, file)){
             printf("[%i] ", count);
-            printf("%s", c);
+            printf("%s", line);
             count++;
         }
         fclose(file);

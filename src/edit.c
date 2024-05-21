@@ -19,6 +19,11 @@ void editTask(taskBuffer *current, taskBuffer *start, taskBuffer *currentAux){
             start = createOnHeap(c); 
             current = start; 
         }else{
+            i++;
+            if(taskNum > i || taskNum < 1){
+                printf("This task doesn't exist\n");
+                return;
+            }
             current -> nextTask = createOnHeap(c);
             current = current -> nextTask;
         }
@@ -31,7 +36,7 @@ void editTask(taskBuffer *current, taskBuffer *start, taskBuffer *currentAux){
     printf("Edit: \n");
     fgets(msgAux, CHAR_LIMIT, stdin);
     current -> task = msgAux;
-    FILE * fileWriteMode = fopen("STORAGE_ARCHIVE", "w");
+    FILE * fileWriteMode = fopen(STORAGE_ARCHIVE, "w");
     current = start;
     for(;current != NULL; current = current -> nextTask){
         fprintf(fileWriteMode, "%s", current -> task);

@@ -8,28 +8,42 @@
 
 void finishTask(taskBuffer *current, taskBuffer *start, taskBuffer *currentAux){
     int taskNum, i;
-    char c[CHAR_LIMIT];
+    char line[CHAR_LIMIT];
     printFile(STORAGE_ARCHIVE);
     printf("Type the task number: ");
     scanf("%i", &taskNum);
     cleanStdinBuffer();
     FILE *fileReadMode = fopen(STORAGE_ARCHIVE, "r");
     i = 1;
-    while((fgets(c, CHAR_LIMIT, fileReadMode)) != NULL){
+    if(fgetc(fileReadMode) == -1){
+        printf("Task doesn't exist\n");
+        return;
+    }
+    while((fgets(line, CHAR_LIMIT, fileReadMode)) != NULL){
         if (i == 1){
             i++;
-            start = createOnHeap(c);
+            start = createOnHeap(line);
             current = start; 
-        }else{ 
-            current -> nextTask = createOnHeap(c); 
-            current = current -> nextTask; 
+        }else{
+            i++;
+            printf("%i", i); //Arrumar
+            if(taskNum > i + 1|| taskNum < 1){
+                printf("This task doesn't exist\n");
+                return;
+            }
+            current -> nextTask = createOnHeap(line); 
+            current = current -> nextTask;
         }
     }
+
+
     if (taskNum == 1){
         current = start -> nextTask;
-        free(start -> task); 
+        if(start->nextTask != NULL){
+            free(start -> task); 
+        }
         free(start); 
-        start = current; 
+        start = current;
     } else {
         current = start;
         for (int i = 2; i <= taskNum - 1; i++){
@@ -44,6 +58,7 @@ void finishTask(taskBuffer *current, taskBuffer *start, taskBuffer *currentAux){
         
         fclose(fileReadMode);
     }
+
     FILE *fileWriteMode = fopen(STORAGE_ARCHIVE, "w");
     current = start;
     for(;current != NULL; current = current -> nextTask){

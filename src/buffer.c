@@ -11,6 +11,9 @@ taskBuffer* createOnHeap(char *task){
 }
 
 void cleanHeap(taskBuffer *start){
+    if(start == NULL){
+        return;
+    }
     if (start -> task){
         free(start -> task);
     }
