@@ -14,31 +14,29 @@ void finishTask(taskBuffer *current, taskBuffer *start, taskBuffer *currentAux){
     scanf("%i", &taskNum);
     cleanStdinBuffer();
     FILE *fileReadMode = fopen(STORAGE_ARCHIVE, "r");
-    i = 1;
-    if(fgetc(fileReadMode) == -1){
+    i = 0;
+    if(taskNum < 1){
         printf("Task doesn't exist\n");
         return;
     }
     while((fgets(line, CHAR_LIMIT, fileReadMode)) != NULL){
+        i++;
         if (i == 1){
-            i++;
             start = createOnHeap(line);
             current = start; 
-        }else{
-            i++;
-            printf("%i", i); //Arrumar
-            if(taskNum > i + 1|| taskNum < 1){
-                printf("This task doesn't exist\n");
-                return;
-            }
-            current -> nextTask = createOnHeap(line); 
-            current = current -> nextTask;
+            continue;
         }
+        current -> nextTask = createOnHeap(line); 
+        current = current -> nextTask;
     }
-
+    if(taskNum > i || i==0){
+        printf("Task doesn't exist\n");
+        return;
+    }
 
     if (taskNum == 1){
         current = start -> nextTask;
+        printf("Finished task: %s", start -> task);
         if(start->nextTask != NULL){
             free(start -> task); 
         }
@@ -51,6 +49,7 @@ void finishTask(taskBuffer *current, taskBuffer *start, taskBuffer *currentAux){
             
         }
         currentAux = current -> nextTask;
+        printf("Finished task: %s", current -> nextTask -> task);
         free(current -> nextTask -> task);
         currentAux = currentAux -> nextTask;
         free(current -> nextTask);

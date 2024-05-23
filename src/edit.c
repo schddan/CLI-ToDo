@@ -7,28 +7,34 @@
 
 void editTask(taskBuffer *current, taskBuffer *start, taskBuffer *currentAux){
     int taskNum, i;
-    char c[CHAR_LIMIT], msgAux[CHAR_LIMIT];
+    char line[CHAR_LIMIT], msgAux[CHAR_LIMIT];
     FILE * fileReadMode = fopen(STORAGE_ARCHIVE, "r");
     printf("Type the task number: ");
     scanf("%i", &taskNum);
     cleanStdinBuffer();
-    i = 1;
-    while((fgets(c, CHAR_LIMIT, fileReadMode)) != NULL){
-        if (i == 1){
-            i++;
-            start = createOnHeap(c); 
-            current = start; 
-        }else{
-            i++;
-            if(taskNum > i || taskNum < 1){
-                printf("This task doesn't exist\n");
-                return;
-            }
-            current -> nextTask = createOnHeap(c);
-            current = current -> nextTask;
-        }
+    i = 0;
+    if(taskNum < 1){
+        printf("Task doesn't exist\n");
+        return;
     }
+    while((fgets(line, CHAR_LIMIT, fileReadMode)) != NULL){
+        i++;
+        if (i == 1){
+            start = createOnHeap(line);
+            current = start; 
+            continue;
+        }
+        current -> nextTask = createOnHeap(line); 
+        current = current -> nextTask;
+    }
+
+    if(taskNum > i || i==0){
+        printf("Task doesn't exist\n");
+        return;
+    }
+
     fclose(fileReadMode);
+    
     current = start;
     for(i = 2; i <= taskNum; i++){
         current = current -> nextTask;
