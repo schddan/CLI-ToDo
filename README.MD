@@ -10,7 +10,6 @@ A To-do app made for Command Line
   $ cd CLI-todo
 
   # Build with CMake:
-  $ cmake build
   $ cmake -S src/ -B build/
 
   #Compiling
@@ -23,3 +22,5 @@ A To-do app made for Command Line
 - todo add: adds a new task
 - todo edit: edits a task
 - todo finish: finish a task
+
+<p>Created by Daniel Alexandre</p>
