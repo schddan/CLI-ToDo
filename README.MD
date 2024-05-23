@@ -4,7 +4,7 @@ A To-do app made for Command Line
 ### Cloning, building and compiling
 ``` bash
   # Clone the repository:
-  $ https://github.com/schddan/CLI-todo.git
+  $ git clone https://github.com/schddan/CLI-todo.git
 
   # Enter directory:
   $ cd CLI-todo
